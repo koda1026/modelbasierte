@@ -39,14 +39,14 @@ fn eval(e: &Exp) -> Maybe {
     match e{
         Exp::One{} => return Maybe::Just{a: Either::Left{int: 1}},
         Exp::Zero{} => return Maybe::Just{a: Either::Left{int: 0}},
-        Exp::Plus{left, right} => 
-            Maybe l = eval(left);
-            Maybe r = eval(right);
-            match l,r{
-                Maybe::Just{a: Either::Left}, 
-                Maybe::Just{a: Either::Left} => Maybe::Just{a: Either::Left{int: l+r}};
+        Exp::Plus{left, right} => {
+            let l = eval(left);
+            let r = eval(right);
+            match (l,r){
+                (Maybe::Just{a: Either::Left{int: i1}}, 
+                Maybe::Just{a: Either::Left{int: i2}}) => return eval(left) + eval(right),
             }
-        Exp::Mult{left, right} => return eval(left) * eval(right),
+        }
 
         _ => return -1,
 
