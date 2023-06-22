@@ -44,7 +44,12 @@ fn eval(e: &Exp) -> Maybe {
             let r = eval(right);
             match (l,r){
                 (Maybe::Just{a: Either::Left{int: i1}}, 
-                Maybe::Just{a: Either::Left{int: i2}}) => return Maybe::Just{a: Either::Left{int: (i1 + i2)}},
+                Maybe::Just{a: Either::Left{int: i2}}) 
+                => return Maybe::Just{a: Either::Left{int: (i1 + i2)}},
+
+                (Maybe::Nothing{}, _) => todo!(),
+                (Maybe::Just{a: Either::Right{boolean: b1}}, _) => todo!(),
+                (_,_) => todo!(),
             }
         }
 
