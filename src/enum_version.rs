@@ -20,12 +20,32 @@ pub enum Exp {
         right: Box<Exp>
     }
 }
+pub enum Either{
+    Left{
+        int: i32,
+    },
+    Right{
+        boolean: bool,
+    }
+}
+pub enum Maybe {
+    Just{
+        a: Either,
+    },
+    Nothing{}
+}
 
-fn eval(e: &Exp) -> i32 {
+fn eval(e: &Exp) -> Maybe {
     match e{
-        Exp::One{} => return 1,
-        Exp::Zero{} => return 0,
-        Exp::Plus{left, right} => return eval(left) + eval(right),
+        Exp::One{} => return Maybe::Just::Left{int: 1},
+        Exp::Zero{} => return Maybe::Just::Left{int: 0},
+        Exp::Plus{left, right} => 
+            Maybe l = eval(left);
+            Maybe r = eval(right);
+            match l,r{
+                Maybe::Just{a: Either::Left}, 
+                Maybe::Just{a: Either::Left} => Maybe::Just{a: Either::Left{l+r}};
+            }
         Exp::Mult{left, right} => return eval(left) * eval(right),
 
         _ => return -1,
@@ -36,6 +56,5 @@ fn eval(e: &Exp) -> i32 {
 
 fn main() {
     let e = Exp::One{};
-    println!("{}", eval(&e));
 
 }
