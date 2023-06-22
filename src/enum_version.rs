@@ -46,10 +46,12 @@ fn eval(e: &Exp) -> Maybe {
                 (Maybe::Just{a: Either::Left{int: i1}}, 
                 Maybe::Just{a: Either::Left{int: i2}}) 
                 => return Maybe::Just{a: Either::Left{int: (i1 + i2)}},
-
-                (Maybe::Nothing{}, _) => todo!(),
-                (Maybe::Just{a: Either::Right{boolean: b1}}, _) => todo!(),
-                (_,_) => todo!(),
+                
+                (_,_) => return Maybe::Nothing{},
+                
+                //Not needed for Plus
+                //(Maybe::Nothing{}, _) => todo!(),
+                //(Maybe::Just{a: Either::Right{boolean: b1}}, _) => todo!(),
             }
         }
 
@@ -60,6 +62,11 @@ fn eval(e: &Exp) -> Maybe {
 
 
 fn main() {
-    let e = Exp::One{};
-
+    let e1 = Exp::One{};
+    let e2 = Exp::One{};
+    let plus_e = Exp::Plus{left: Box::new(e1), right: Box::new(e2)};
+    let result = eval(&plus_e);
+    if let Maybe::Just{a: Either::Left{int}} = result{
+        println!("{}", int);
+    }
 }
