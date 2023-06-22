@@ -37,14 +37,14 @@ pub enum Maybe {
 
 fn eval(e: &Exp) -> Maybe {
     match e{
-        Exp::One{} => return Maybe::Just::Left{int: 1},
-        Exp::Zero{} => return Maybe::Just::Left{int: 0},
+        Exp::One{} => return Maybe::Just{a: Either::Left{int: 1}},
+        Exp::Zero{} => return Maybe::Just{a: Either::Left{int: 0}},
         Exp::Plus{left, right} => 
             Maybe l = eval(left);
             Maybe r = eval(right);
             match l,r{
                 Maybe::Just{a: Either::Left}, 
-                Maybe::Just{a: Either::Left} => Maybe::Just{a: Either::Left{l+r}};
+                Maybe::Just{a: Either::Left} => Maybe::Just{a: Either::Left{int: l+r}};
             }
         Exp::Mult{left, right} => return eval(left) * eval(right),
 
