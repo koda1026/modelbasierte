@@ -30,6 +30,8 @@ fn eval(e: &Exp) -> Option<Either<i32, bool>> {
     match e{
         Exp::One{} => return Some(Left(1)),
         Exp::Zero{} => return Some(Left(0)),
+        Exp::ETrue{} => return Some(Right(true)),
+        Exp::EFalse{} => return Some(Right(false)),
         Exp::Plus{left, right} => {
             let l = eval(left);
             let r = eval(right);
