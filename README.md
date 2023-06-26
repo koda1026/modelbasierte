@@ -1,10 +1,9 @@
 # Type based evaluator in Rust
-
+Modelbasierte Softwareentwicklung Projekt
+Arithmetic expressions in Rust - Evaluator
 ## Authors
 - [Phil Krause]
 - [David Koch]
-Modelbasierte Softwareentwicklung Projekt
-Arithmetic expressions in Rust - Evaluator
 
 ## Implementation
 In this repository we rebuilt the Evaluator which was originally implemented in Haskell for the course "Modellbasierte Softwareentwicklung" in Rust. We represented the Haskell data-types with the help of enums in Rust.
