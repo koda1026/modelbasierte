@@ -56,8 +56,15 @@ fn eval(e: &Exp) -> Option<Either<i32, bool>> {
                 (_, _) => return None,
             }
         }
-        _ => return None,
-
+        Exp::Or{left, right} => {
+            let l = eval(left);
+            let r = eval(right);
+            match (l, r){
+                (Some(Right(true)), _) => return Some(Right(true)),
+                (Some(Right(false)), Some(Right(b2))) => return Some(Right(b2)),
+                (_, _) => return None,
+            }
+        }
     }
 }
 
@@ -72,5 +79,13 @@ fn main() {
     let finale = eval(&Exp::Mult{left: Box::new(result), right: Box::new(result2)});
     if let Option::Some(Either::Left(i1)) = finale{
         println!("{}", i1);
+    }
+
+    let b1 = Exp::ETrue{};
+    let b2 = Exp::EFalse{};
+    let p1 = Exp::Plus{left: Box::new(Exp::One{}), right: Box::new(Exp::Zero{})};
+    let res = Exp::Or{left: Box::new(b2), right: Box::new(p1)};
+    if let Option::Some(Either::Right(b)) = eval(&res){
+        println!("{}", b);
     }
 }
