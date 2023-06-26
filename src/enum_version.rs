@@ -1,7 +1,12 @@
-// define E as in the Haskel example
-// data E = One | Zero | ETrue | EFalse | Plus E E | Mult E E | Or E E
+use std::option::*;
+use Either::*;
 
-// option 1
+
+pub enum Either<L, R> {
+    Left(L),
+    Right(R),
+}
+
 pub enum Exp {
     ETrue{},
     EFalse {},
@@ -20,34 +25,20 @@ pub enum Exp {
         right: Box<Exp>
     }
 }
-pub enum Either{
-    Left{
-        int: i32,
-    },
-    Right{
-        boolean: bool,
-    }
-}
-pub enum Maybe {
-    Just{
-        a: Either,
-    },
-    Nothing{}
-}
 
-fn eval(e: &Exp) -> Maybe {
+fn eval(e: &Exp) -> Option<Either<i32, bool>> {
     match e{
-        Exp::One{} => return Maybe::Just{a: Either::Left{int: 1}},
-        Exp::Zero{} => return Maybe::Just{a: Either::Left{int: 0}},
+        Exp::One{} => return Some(Left(1)),
+        Exp::Zero{} => return Some(Left(0)),
         Exp::Plus{left, right} => {
             let l = eval(left);
             let r = eval(right);
             match (l,r){
-                (Maybe::Just{a: Either::Left{int: i1}}, 
-                Maybe::Just{a: Either::Left{int: i2}}) 
-                => return Maybe::Just{a: Either::Left{int: (i1 + i2)}},
+                (Some(Left(i1)), 
+                Some(Left(i2))) 
+                => return Some(Left(i1 + i2)),
                 
-                (_,_) => return Maybe::Nothing{},
+                (_,_) => return None,
                 
                 //Not needed for Plus
                 //(Maybe::Nothing{}, _) => todo!(),
@@ -55,18 +46,17 @@ fn eval(e: &Exp) -> Maybe {
             }
         }
 
-        _ => return Maybe::Nothing{},
+        _ => return None,
 
     }
 }
 
 
 fn main() {
-    let e1 = Exp::One{};
-    let e2 = Exp::One{};
-    let plus_e = Exp::Plus{left: Box::new(e1), right: Box::new(e2)};
-    let result = eval(&plus_e);
-    if let Maybe::Just{a: Either::Left{int}} = result{
-        println!("{}", int);
+    let one = Exp::One{};
+    let one2 = Exp::One{};
+    let result = eval(&Exp::Plus{left: Box::new(one), right: Box::new(one2)});
+    if let Option::Some(Either::Left(i1)) = result{
+        print!("{}", i1);
     }
 }
